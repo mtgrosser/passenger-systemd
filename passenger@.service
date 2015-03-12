@@ -1,0 +1,19 @@
+[Unit]
+Description=Passenger Standalone Application Server
+After=network.target
+
+[Service]
+Type=forking
+PrivateTmp=yes
+User=USERNAME
+Group=GROUPNAME
+WorkingDirectory=/apps/%i
+PIDFile=/run/passenger/app.%i.pid
+Environment="PASSENGER_INSTANCE_REGISTRY_DIR=/run/passenger"
+EnvironmentFile=/apps/%i/current/config/passenger.env
+ExecStart=/usr/bin/bash -c 'exec ${PASSENGER_ROOT}/bin/passenger start current --daemonize --instance-registry-dir /run/passenger --socket /run/passenger/app.%i.sock --pid-file /run/passenger/app.%i.pid --log-file /apps/%i/shared/log/passenger.log --environment production $PASSENGER_OPTS'
+ExecReload=/usr/bin/bash -c 'exec ${PASSENGER_ROOT}/bin/passenger-config restart-app /apps/%i'
+ExecStop=/usr/bin/bash -c 'exec ${PASSENGER_ROOT}/bin/passenger stop --pid-file /run/passenger/app.%i.pid'
+ 
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,24 @@
+#!/bin/bash
+
+if [ -z "$1" ]; then
+  echo "Usage: passenger-restart APP"
+  exit 1
+fi
+
+APPDIR="/apps/$1"
+
+if [ ! -d "$APPDIR" ]; then
+  echo "Application $1 not found at $APPDIR"
+  exit 1
+fi
+
+PASSENGER_ENV="$APPDIR/current/config/passenger.env"
+
+if [ ! -f "$PASSENGER_ENV" ]; then
+  echo "Passenger environment not found at $PASSENGER_ENV"
+  exit 1
+fi
+
+source $PASSENGER_ENV
+
+passenger-config restart-app $APPDIR
