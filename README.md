@@ -8,7 +8,7 @@ http://matthias-grosser.de/blog/2015/01/deploying-multiple-rails-apps-with-passe
 
 ```
 /etc/systemd/system/passenger@.service
-/usr/local/bin/passenger-restart-app
+/usr/local/bin/passenger-reload-app
 /etc/tmpfiles.d/passenger.conf
 ```
 
@@ -17,3 +17,15 @@ http://matthias-grosser.de/blog/2015/01/deploying-multiple-rails-apps-with-passe
 ```
 /apps/APPNAME/current/config/passenger.env
 ```
+
+## Controlling your applications
+
+```
+# systemctl start passenger@APPNAME
+# systemctl stop passenger@APPNAME
+# systemctl reload passenger@APPNAME
+# systemctl restart passenger@APPNAME
+
+$ passenger-reload-app APPNAME
+```
+
