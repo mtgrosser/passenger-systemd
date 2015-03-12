@@ -1,2 +1,3 @@
-Deploying multiple Rails apps with Passenger Standalone and systemd 
+# Deploying multiple Rails apps with Passenger Standalone and systemd 
 
+For detailed instructions check out http://matthias-grosser.de/blog/2015/01/deploying-multiple-rails-apps-with-passenger-standalone-and-systemd/
