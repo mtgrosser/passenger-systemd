@@ -6,10 +6,14 @@ http://matthias-grosser.de/blog/2015/01/deploying-multiple-rails-apps-with-passe
 
 ## File layout
 
+```
 /etc/systemd/system/passenger@.service
 /usr/local/bin/passenger-restart-app
 /etc/tmpfiles.d/passenger.conf
+```
 
 ## Per-app configuration files
 
+```
 /apps/APPNAME/current/config/passenger.env
+```
