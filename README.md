@@ -26,6 +26,6 @@ http://matthias-grosser.de/blog/2015/01/deploying-multiple-rails-apps-with-passe
 # systemctl reload passenger@APPNAME
 # systemctl restart passenger@APPNAME
 
-$ passenger-reload-app APPNAME
+$ passenger-restart-app APPNAME
 ```
 
