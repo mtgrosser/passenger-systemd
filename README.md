@@ -1,5 +1,15 @@
-### Deploying multiple Rails apps with Passenger Standalone and systemd 
+# Running Passenger with systemd
 
-For detailed instructions check out my blog post:
+This repo provides systemd unit files for running multiple Rails apps with Phusion Passenger. For detailed instructions check out my blog post:
 
 http://matthias-grosser.de/blog/2015/01/deploying-multiple-rails-apps-with-passenger-standalone-and-systemd/
+
+## File layout
+
+/etc/systemd/system/passenger@.service
+/usr/local/bin/passenger-restart-app
+/etc/tmpfiles.d/passenger.conf
+
+## Per-app configuration files
+
+/apps/APPNAME/current/config/passenger.env
