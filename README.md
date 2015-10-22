@@ -38,6 +38,7 @@ As root, with systemd:
 # systemctl stop passenger@APPNAME
 # systemctl reload passenger@APPNAME
 # systemctl restart passenger@APPNAME
+```
 
 As user:
 ```
