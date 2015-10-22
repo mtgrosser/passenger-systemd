@@ -4,28 +4,47 @@ This repo provides systemd unit files for running multiple Rails apps with Phusi
 
 http://matthias-grosser.de/blog/2015/01/deploying-multiple-rails-apps-with-passenger-standalone-and-systemd/
 
-## File layout
+## Install
 
+Place these two files in the following locations:
 ```
 /etc/systemd/system/passenger@.service
-/usr/local/bin/passenger-restart-app
-/etc/tmpfiles.d/passenger.conf
+/usr/local/bin/passenger-app
 ```
 
-## Per-app configuration files
+And add some permissions:
 
 ```
-/apps/APPNAME/current/config/passenger.env
+# sudo chmod +x /usr/loacl/bin/passenger-app
+```
+
+## Per-app configuration
+
+Passenger runtime directory:
+```
+/srv/apps/<APP>/passenger
+```
+
+Passenger configuration:
+```
+/srv/apps/<APP>/current/config/passenger.env
 ```
 
 ## Controlling your applications
 
+As root, with systemd:
 ```
 # systemctl start passenger@APPNAME
 # systemctl stop passenger@APPNAME
 # systemctl reload passenger@APPNAME
 # systemctl restart passenger@APPNAME
-
-$ passenger-restart-app APPNAME
 ```
 
+As user:
+```
+$ passenger-app <app> start
+$ passenger-app <app> restart
+$ passenger-app <app> stop
+$ passenger-app <app> status [<args>]
+$ passenger-app <app> config <args>
+```
