@@ -5,14 +5,13 @@ After=network.target
 [Service]
 Type=forking
 PrivateTmp=yes
-User=USERNAME
-Group=GROUPNAME
-WorkingDirectory=/apps/%i
-PIDFile=/run/passenger/%i.pid
-EnvironmentFile=/apps/%i/current/config/passenger.env
-ExecStart=/usr/bin/bash -c 'exec ${PASSENGER_ROOT}/bin/passenger start current --daemonize --instance-registry-dir /run/passenger-instreg --socket /run/passenger/%i.sock --pid-file /run/passenger/%i.pid --log-file /apps/%i/shared/log/passenger.log --environment production $PASSENGER_OPTS'
-ExecReload=/usr/bin/bash -c 'exec ${PASSENGER_ROOT}/bin/passenger-config restart-app /apps/%i'
-ExecStop=/usr/bin/bash -c 'exec ${PASSENGER_ROOT}/bin/passenger stop --pid-file /run/passenger/%i.pid'
- 
+User=rails
+Group=rails
+WorkingDirectory=/srv/apps/%i
+PIDFile=/srv/apps/%i/passenger/app.pid
+ExecStart=/usr/local/bin/passenger-app %i start
+ExecReload=/usr/local/bin/passenger-app %i restart
+ExecStop=/usr/local/bin/passenger-app %i stop
+
 [Install]
 WantedBy=multi-user.target
