@@ -42,9 +42,11 @@ As root, with systemd:
 
 As user:
 ```
+$ passenger-app --help
 $ passenger-app <app> start
-$ passenger-app <app> restart
+$ passenger-app <app> reload
 $ passenger-app <app> stop
+$ passenger-app <app> restart
 $ passenger-app <app> status [<args>]
 $ passenger-app <app> config <args>
 ```

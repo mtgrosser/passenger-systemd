@@ -3,7 +3,7 @@ namespace :passenger do
   desc 'Generate passenger environment'
   task :env => :environment do
     ruby_api_version = RbConfig::CONFIG['ruby_version']
-    passenger_root = Bundler.with_clean_env { `rbfu @#{RUBY_VERSION} passenger-config --root 2>/dev/null` }.strip
+    passenger_root = Bundler.with_clean_env { `passenger-config --root 2>/dev/null` }.strip
     raise "Passenger root not found" unless File.exist?(passenger_root)
     env = []
     env << %{PATH="/opt/rubies/#{RUBY_VERSION}/bin:/usr/local/bin:/usr/bin"}

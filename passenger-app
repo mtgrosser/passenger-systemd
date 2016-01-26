@@ -8,8 +8,9 @@ Usage: passenger-app <app> <command> [<args>]
 
 Commands:
    start     Start application <app>
-   restart   Reload application <app>
+   reload    Reload application <app>
    stop      Stop application <app>
+   restart   Restart application <app>
    status    Run passenger-status with <args>
    config    Run passenger-config with <args>
 EOD
@@ -28,7 +29,7 @@ start() {
   exec ${PASSENGER_ROOT}/bin/passenger start current --daemonize --instance-registry-dir ${PASSENGER_INSTANCE_REGISTRY_DIR} --engine builtin --socket ${PASSENGER_INSTANCE_REGISTRY_DIR}/app.sock --pid-file ${PASSENGER_INSTANCE_REGISTRY_DIR}/app.pid --log-file ${APPDIR}/shared/log/passenger.log --environment production $PASSENGER_OPTS
 }
 
-restart() {
+reload() {
   exec passenger-config restart-app "$APPDIR"
 }
 
@@ -36,12 +37,22 @@ stop() {
   exec ${PASSENGER_ROOT}/bin/passenger stop --pid-file ${PASSENGER_INSTANCE_REGISTRY_DIR}/app.pid
 }
 
+restart() {
+  echo "Shutting down application ..."
+  ${PASSENGER_ROOT}/bin/passenger stop --pid-file ${PASSENGER_INSTANCE_REGISTRY_DIR}/app.pid
+  sleep 5
+  start
+}
 
 APP=$1; shift
 ACTION=$1; shift
 
 # sanity checks
 [ ! "$APP" ] && warn "Please specify the application to use" && exit 1
+
+if [ "$APP" == "--help" ]; then
+  usage && exit 0
+fi
 
 if [ ! -n "$PASSENGER_APPS_ROOT" ]; then
   PASSENGER_APPS_ROOT="/srv/apps"
@@ -52,7 +63,7 @@ if [ ! -d "$PASSENGER_APPS_ROOT" ]; then
   warn "Check the PASSENGER_APPS_ROOT environment variable"
   exit 1
 fi
-  
+
 APPDIR="$PASSENGER_APPS_ROOT/$APP"
 if [ ! -d "$APPDIR" ]; then
   warn "Application $APP not found at $APPDIR"
@@ -89,11 +100,14 @@ case "$ACTION" in
   start)
     start
   ;;
-  restart)
-    restart
+  reload)
+    reload
   ;;
   stop)
     stop
+  ;;
+  restart)
+    restart
   ;;
   status)
     status $@
@@ -105,3 +119,4 @@ case "$ACTION" in
     usage && exit 1
   ;;
 esac
+
