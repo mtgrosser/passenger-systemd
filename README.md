@@ -27,7 +27,7 @@ Passenger runtime directory:
 
 Passenger configuration:
 ```
-/srv/apps/<APP>/current/config/passenger.env
+/srv/apps/<APP>/current/Passengerfile.json
 ```
 
 ## Controlling your applications
