@@ -17,29 +17,29 @@ EOD
 }
 
 config() {
-  exec passenger-config "$@"
+  exec rbfu passenger-config "$@"
 }
 
 status() {
-  exec passenger-status "$@"
+  exec rbfu passenger-status "$@"
 }
 
 start() {
   cd "$APPDIR"
-  exec ${PASSENGER_ROOT}/bin/passenger start current --daemonize --instance-registry-dir ${PASSENGER_INSTANCE_REGISTRY_DIR} --engine builtin --socket ${PASSENGER_INSTANCE_REGISTRY_DIR}/app.sock --pid-file ${PASSENGER_INSTANCE_REGISTRY_DIR}/app.pid --log-file ${APPDIR}/shared/log/passenger.log --environment production $PASSENGER_OPTS
+  exec rbfu passenger start current --daemonize --instance-registry-dir ${PASSENGER_INSTANCE_REGISTRY_DIR} --engine builtin --socket ${PASSENGER_INSTANCE_REGISTRY_DIR}/app.sock --pid-file ${PASSENGER_INSTANCE_REGISTRY_DIR}/app.pid --log-file ${APPDIR}/shared/log/passenger.log --environment production
 }
 
 reload() {
-  exec passenger-config restart-app "$APPDIR"
+  exec /usr/bin/touch ${APPDIR}/shared/tmp/restart.txt
 }
 
 stop() {
-  exec ${PASSENGER_ROOT}/bin/passenger stop --pid-file ${PASSENGER_INSTANCE_REGISTRY_DIR}/app.pid
+  exec rbfu passenger stop --pid-file ${PASSENGER_INSTANCE_REGISTRY_DIR}/app.pid
 }
 
 restart() {
   echo "Shutting down application ..."
-  ${PASSENGER_ROOT}/bin/passenger stop --pid-file ${PASSENGER_INSTANCE_REGISTRY_DIR}/app.pid
+  rbfu passenger stop --pid-file ${PASSENGER_INSTANCE_REGISTRY_DIR}/app.pid
   sleep 5
   start
 }
@@ -76,23 +76,15 @@ if [ ! -d "$PASSENGER_INSTANCE_REGISTRY_DIR" ]; then
   exit 1
 fi
 
-PASSENGER_ENV="$APPDIR/current/config/passenger.env"
-if [ ! -f "$PASSENGER_ENV" ]; then
-  warn "Passenger environment not found at $PASSENGER_ENV"
-  exit 1
-fi
-
-source $PASSENGER_ENV
-
 # TODO: check env variables
 
 export PATH
 export GEM_HOME
 export GEM_PATH
 export PASSENGER_ROOT
-export PASSENGER_OPTS
 export PASSENGER_INSTANCE_REGISTRY_DIR
-  
+export RUBY_VERSION_DIR="$APPDIR/current"
+
 case "$ACTION" in
   help)
     usage && exit 0
@@ -119,4 +111,3 @@ case "$ACTION" in
     usage && exit 1
   ;;
 esac
-

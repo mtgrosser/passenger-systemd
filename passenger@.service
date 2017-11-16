@@ -5,8 +5,8 @@ After=network.target
 [Service]
 Type=forking
 PrivateTmp=yes
-User=USERNAME
-Group=GROUPNAME
+User=railsapp
+Group=railsapp
 WorkingDirectory=/srv/apps/%i
 PIDFile=/srv/apps/%i/passenger/app.pid
 ExecStart=/usr/local/bin/passenger-app %i start
