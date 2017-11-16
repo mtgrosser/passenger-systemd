@@ -15,7 +15,7 @@ Place these two files in the following locations:
 And add some permissions:
 
 ```
-# sudo chmod +x /usr/loacl/bin/passenger-app
+# sudo chmod +x /usr/local/bin/passenger-app
 ```
 
 ## Per-app configuration
